@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta
+      name="description"
+      content="Vishnu Deepak - Data Science and AI portfolio"
+    />
+    <title>Vishnu Deepak | Data Science & AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+  <body>
+    <div class="bg-grid"></div>
+    <header class="site-header">
+      <nav class="nav">
+        <a class="logo" href="#top">
+          <img class="logo-symbol" src="{% static 'img/symbol.png' %}" alt="VD symbol" />
+          Vishnu Deepak
+        </a>
+        <div class="nav-links">
+          <a href="#about">About</a>
+          <a href="#projects">Projects</a>
+          <a href="#skills">Skills</a>
+          <a href="#experience">Experience</a>
+          <a href="#education">Education</a>
+          <a href="#certifications">Certifications</a>
+          <a href="#contact">Contact</a>
+        </div>
+        <a class="cta" href="#contact">Get in touch</a>
+      </nav>
+    </header>
+
+    <main id="top">{% block content %}{% endblock %}</main>
+
+    <footer class="site-footer">
+      <p>© 2026 Vishnu Deepak. Built with Django.</p>
+    </footer>
+
+    <script src="{% static 'js/main.js' %}"></script>
+  </body>
+</html>

@@ -1,0 +1,472 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="hero">
+  <div class="hero-content">
+    <p class="eyebrow">Data Science • Machine Learning • AI</p>
+    <h1>
+      Vishnu Deepak
+      <span>Data Science & AI Enthusiast</span>
+    </h1>
+    <div class="hero-actions">
+      <a class="btn primary" href="#contact">Get in touch</a>
+      <a class="btn ghost" href="#projects">View Projects</a>
+    </div>
+    <div class="hero-icons">
+      <a href="https://github.com/VishnuDeepak213" target="_blank" rel="noreferrer" aria-label="GitHub">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M12 2.2c-5.42 0-9.8 4.4-9.8 9.83 0 4.34 2.86 8.02 6.84 9.33.5.1.68-.22.68-.48 0-.23-.01-.83-.01-1.63-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.61.07-.61 1 .07 1.52 1.03 1.52 1.03.9 1.55 2.36 1.1 2.94.84.1-.66.35-1.1.64-1.36-2.22-.25-4.56-1.12-4.56-4.98 0-1.1.39-2 1.03-2.7-.1-.25-.45-1.28.1-2.66 0 0 .84-.27 2.75 1.03.8-.22 1.64-.33 2.48-.33.84 0 1.68.11 2.48.33 1.9-1.3 2.74-1.03 2.74-1.03.55 1.38.2 2.41.1 2.66.64.7 1.03 1.6 1.03 2.7 0 3.87-2.34 4.72-4.57 4.97.36.31.68.92.68 1.85 0 1.33-.01 2.4-.01 2.72 0 .27.18.59.69.48a9.84 9.84 0 0 0 6.83-9.33C21.8 6.6 17.42 2.2 12 2.2z" fill="currentColor" />
+        </svg>
+      </a>
+      <a href="https://www.linkedin.com/in/vishnu-deepak" target="_blank" rel="noreferrer" aria-label="LinkedIn">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M4.98 3.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.52-1 1.8-2.05 3.7-2.05 3.95 0 4.45 2.6 4.45 5.98V21h-4v-5.35c0-1.28-.02-2.93-1.8-2.93-1.8 0-2.08 1.4-2.08 2.84V21H9z" fill="currentColor" />
+        </svg>
+      </a>
+      <a href="mailto:vishnu95211@gmail.com" aria-label="Email">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M4 5h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2zm0 2 8 5 8-5H4zm16 10V9l-8 5-8-5v8h16z" fill="currentColor" />
+        </svg>
+      </a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="orb"></div>
+    <div class="card glow">
+      <p class="card-title">Agent Reliability</p>
+      <div class="mini-chart">
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <p class="card-meta">Routing • Tooling • Guardrails</p>
+    </div>
+    <div class="card">
+      <p class="card-title">Prediction Systems</p>
+      <p class="card-meta">Explainability • Metrics • QA</p>
+    </div>
+    <div class="card">
+      <p class="card-title">Vision Pipelines</p>
+      <p class="card-meta">Tracking • Density • Alerts</p>
+    </div>
+  </div>
+</section>
+
+<section id="about" class="section reveal">
+  <div class="section-title">
+    <h2>About</h2>
+    <p>Focused on data-to-decision systems with measurable impact.</p>
+  </div>
+  <div class="about">
+    <p>
+      I work across the ML lifecycle, from data preparation and modeling to
+      deployment and monitoring. My projects emphasize reliability, explainability,
+      and clean user experiences.
+    </p>
+    <p>
+      I am looking for a team where I can contribute quickly, learn from strong
+      mentors, and build products that deliver measurable outcomes.
+    </p>
+  </div>
+</section>
+
+<section id="projects" class="section reveal">
+  <div class="section-title">
+    <h2>Projects</h2>
+    <p>Practical AI systems with measurable impact.</p>
+  </div>
+
+  <div class="project-widget-grid">
+    <article class="project-widget">
+      <div class="project-widget-summary">
+        <div class="project-widget-media">
+          <img src="{% static 'img/CS agent.png' %}" alt="Support AI Agent preview" loading="lazy" />
+          <span>Support AI Agent</span>
+        </div>
+        <div class="project-widget-body">
+          <header class="project-widget-header">
+            <h3>Customer Support AI Agent</h3>
+          </header>
+          <p>
+            Hybrid autonomous support agent with deterministic pre-check routing
+            and LangChain ReAct orchestration using ChatGroq as the primary
+            reasoning layer.
+          </p>
+          <div class="project-widget-tags">
+            <span>LangChain</span>
+            <span>LLaMA 3.1</span>
+            <span>Groq API</span>
+            <span>FastAPI</span>
+            <span>Gradio</span>
+          </div>
+        </div>
+      </div>
+      <div class="project-widget-details">
+        <div>
+          <h4>Highlights</h4>
+          <ul>
+            <li>Forced tool invocation for CRM lookups and escalations.</li>
+            <li>500-record SQLite CRM with ID verification for hallucination detection.</li>
+            <li>FastAPI REST endpoints with Gradio frontend.</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Links</h4>
+          <a class="project-widget-link" href="https://customersupportaiagent.streamlit.app/" target="_blank" rel="noreferrer">Live Demo</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="project-widget">
+      <div class="project-widget-summary">
+        <div class="project-widget-media">
+          <img src="{% static 'img/churn.png' %}" alt="Churn Prediction preview" loading="lazy" />
+          <span>Churn Pipeline</span>
+        </div>
+        <div class="project-widget-body">
+          <header class="project-widget-header">
+            <h3>Customer Churn Prediction Pipeline</h3>
+          </header>
+          <p>
+            End-to-end churn prediction pipeline with feature engineering,
+            model benchmarking, and explainability.
+          </p>
+          <div class="project-widget-tags">
+            <span>XGBoost</span>
+            <span>SHAP</span>
+            <span>MLflow</span>
+            <span>FastAPI</span>
+            <span>Docker</span>
+            <span>Power BI</span>
+          </div>
+        </div>
+      </div>
+      <div class="project-widget-details">
+        <div>
+          <h4>Highlights</h4>
+          <ul>
+            <li>SMOTE oversampling: 26.5% imbalance, 21→45 features.</li>
+            <li>XGBoost tuned with Optuna: AUC 0.87, F1 0.72, Recall 0.79.</li>
+            <li>SHAP explainability + Docker: ROC-AUC 0.85, PR-AUC 0.66.</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Links</h4>
+          <a class="project-widget-link" href="https://telcustomerchurnprediction.streamlit.app/" target="_blank" rel="noreferrer">Live Demo</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="project-widget">
+      <div class="project-widget-summary">
+        <div class="project-widget-media">
+          <img src="{% static 'img/real time crowd.png' %}" alt="Crowd Tracking preview" loading="lazy" />
+          <span>Crowd Tracking</span>
+        </div>
+        <div class="project-widget-body">
+          <header class="project-widget-header">
+            <h3>Real-Time Crowd Detection and Tracking System</h3>
+          </header>
+          <p>
+            Real-time crowd detection and tracking system for crowded environment
+            analytics.
+          </p>
+          <div class="project-widget-tags">
+            <span>YOLOv8</span>
+            <span>PyTorch/CUDA</span>
+            <span>ByteTrack</span>
+            <span>OpenCV</span>
+            <span>Streamlit</span>
+          </div>
+        </div>
+      </div>
+      <div class="project-widget-details">
+        <div>
+          <h4>Highlights</h4>
+          <ul>
+            <li>YOLOv8 on 9K images (RTX 3050): 0.75 mAP@50.</li>
+            <li>ByteTrack + Hungarian matching with density heatmaps.</li>
+            <li>Streamlit dashboard: Precision 0.78, Recall 0.65, MAE 7.1.</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Links</h4>
+          <a class="project-widget-link" href="https://smartdetectionsurveillance.streamlit.app/" target="_blank" rel="noreferrer">Live Demo</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="project-widget">
+      <div class="project-widget-summary">
+        <div class="project-widget-media">
+          <img src="{% static 'img/symbol.png' %}" alt="IRIS Assistant preview" loading="lazy" />
+          <span>IRIS Assistant</span>
+        </div>
+        <div class="project-widget-body">
+          <header class="project-widget-header">
+            <h3>Voice Assistant (IRIS)</h3>
+          </header>
+          <p>
+            Voice assistant for speech-to-text, intent processing, and automation.
+          </p>
+          <div class="project-widget-tags">
+            <span>Python</span>
+            <span>Google Speech API</span>
+            <span>pyttsx3</span>
+            <span>NLP</span>
+          </div>
+        </div>
+      </div>
+      <div class="project-widget-details">
+        <div>
+          <h4>Highlights</h4>
+          <ul>
+            <li>Voice commands for daily automation tasks.</li>
+            <li>Intent classifier with fallback responses.</li>
+            <li>Local TTS for low-latency responses.</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Links</h4>
+          <span class="project-widget-link">Private project</span>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section id="skills" class="section reveal">
+  <div class="section-title">
+    <h2>Skills</h2>
+    <p>Technical depth with a product-focused mindset.</p>
+  </div>
+  <div class="project-grid">
+    <article class="project-card">
+      <header>
+        <h3>Python</h3>
+      </header>
+      <p class="tags">
+        <span>TensorFlow</span><span>PyTest</span><span>Scikit-learn</span><span>PyTorch</span><span>OpenCV</span><span>Matplotlib</span>
+      </p>
+    </article>
+    <article class="project-card">
+      <header>
+        <h3>Machine Learning</h3>
+      </header>
+      <p class="tags">
+        <span>Supervised Learning</span><span>Unsupervised Learning</span><span>Model Evaluation</span><span>Hyperparameter Tuning</span>
+      </p>
+    </article>
+    <article class="project-card">
+      <header>
+        <h3>Deep Learning</h3>
+      </header>
+      <p class="tags">
+        <span>CNN</span><span>RNN</span><span>Transformers</span><span>ByteTrack</span><span>Optical Flow Farneback</span>
+      </p>
+    </article>
+    <article class="project-card">
+      <header>
+        <h3>MongoDB</h3>
+      </header>
+      <p class="tags"><span>CRUD</span><span>Aggregations</span></p>
+    </article>
+    <article class="project-card">
+      <header>
+        <h3>Tools & Platforms</h3>
+      </header>
+      <p class="tags">
+        <span>Power BI</span><span>Google Colab</span><span>Render</span><span>Streamlit</span><span>Git</span><span>GitHub</span><span>Adobe</span><span>Hugging Face</span>
+      </p>
+    </article>
+    <article class="project-card">
+      <header>
+        <h3>Soft Skills</h3>
+      </header>
+      <p class="tags"><span>Quick Learner</span><span>Communication</span><span>Collaboration</span><span>Adaptability</span></p>
+    </article>
+  </div>
+</section>
+
+<section id="experience" class="section reveal">
+  <div class="section-title">
+    <h2>Internship Experience</h2>
+    <p>Industry experience with real-world analytics.</p>
+  </div>
+  <div class="experience-list">
+    <article class="experience-card">
+      <div class="experience-badge">Data Valley</div>
+      <div class="experience-content">
+        <header>
+          <h3>Data Analyst Intern</h3>
+          <p>Nov 2025 - Apr 2026 · Vijayawada, Andhra Pradesh</p>
+        </header>
+        <p>
+          Performed data cleaning, preprocessing, and EDA on multi-table datasets
+          using Python (Pandas, NumPy) to uncover trends, anomalies, and data
+          quality issues.
+        </p>
+        <ul>
+          <li>Built SQL queries with joins and aggregations for business reporting.</li>
+          <li>Delivered Power BI dashboards with 10+ KPIs for stakeholders.</li>
+        </ul>
+        <div class="experience-tags">
+          <span>Python</span>
+          <span>Pandas</span>
+          <span>SQL</span>
+          <span>Power BI</span>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section id="education" class="section reveal">
+  <div class="section-title">
+    <h2>Education</h2>
+    <p>Academic foundation in AI and data science.</p>
+  </div>
+  <div class="about">
+    <p>
+      BTech in Artificial Intelligence & Data Science, CGPA 7.38
+    </p>
+    <p>
+      Usha Rama College of Engineering and Technology | 2022-2026
+    </p>
+  </div>
+</section>
+
+<section id="certifications" class="section reveal">
+  <div class="section-title">
+    <h2>Certifications</h2>
+    <p>Continuous learning and industry recognition.</p>
+  </div>
+  <div class="project-grid">
+    <article class="project-card">
+      <header>
+        <h3>Deloitte Data Analytics</h3>
+      </header>
+      <p>Oct 2025</p>
+    </article>
+    <article class="project-card">
+      <header>
+        <h3>Salesforce Agent Force Global Certification</h3>
+      </header>
+      <p>Oct 2025</p>
+    </article>
+    <article class="project-card">
+      <header>
+        <h3>Cyber Security & Privacy - NPTEL</h3>
+      </header>
+      <p>Jul 2024 - Oct 2024</p>
+    </article>
+    <article class="project-card">
+      <header>
+        <h3>Google AI/ML - AICTE</h3>
+      </header>
+      <p>Jan 2025 - Mar 2025</p>
+    </article>
+    <article class="project-card">
+      <header>
+        <h3>MongoDB Basics - MongoDB University</h3>
+      </header>
+      <p>Mar 2024 - Apr 2024</p>
+    </article>
+    <article class="project-card">
+      <header>
+        <h3>MongoDB Associate Developer (Python)</h3>
+      </header>
+      <p>Oct 2025</p>
+    </article>
+  </div>
+</section>
+
+<section id="contact" class="section reveal">
+  <div class="section-title">
+    <h2>Get in Touch</h2>
+    <p>Open to opportunities and collaborative projects.</p>
+  </div>
+  <div class="contact-wrap">
+    <div class="contact-info">
+      <div class="contact-item">
+        <div>
+          <h4>Email</h4>
+          <p>For inquiries, reach me at:</p>
+          <a href="mailto:vishnu95211@gmail.com">vishnu95211@gmail.com</a>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div>
+          <h4>Location</h4>
+          <p>Vijayawada, Andhra Pradesh.</p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div>
+          <h4>Find me on</h4>
+          <div class="contact-icons">
+            <a href="https://github.com/VishnuDeepak213" target="_blank" rel="noreferrer" aria-label="GitHub">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M12 2.2c-5.42 0-9.8 4.4-9.8 9.83 0 4.34 2.86 8.02 6.84 9.33.5.1.68-.22.68-.48 0-.23-.01-.83-.01-1.63-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.61.07-.61 1 .07 1.52 1.03 1.52 1.03.9 1.55 2.36 1.1 2.94.84.1-.66.35-1.1.64-1.36-2.22-.25-4.56-1.12-4.56-4.98 0-1.1.39-2 1.03-2.7-.1-.25-.45-1.28.1-2.66 0 0 .84-.27 2.75 1.03.8-.22 1.64-.33 2.48-.33.84 0 1.68.11 2.48.33 1.9-1.3 2.74-1.03 2.74-1.03.55 1.38.2 2.41.1 2.66.64.7 1.03 1.6 1.03 2.7 0 3.87-2.34 4.72-4.57 4.97.36.31.68.92.68 1.85 0 1.33-.01 2.4-.01 2.72 0 .27.18.59.69.48a9.84 9.84 0 0 0 6.83-9.33C21.8 6.6 17.42 2.2 12 2.2z" fill="currentColor" />
+              </svg>
+            </a>
+            <a href="https://www.linkedin.com/in/vishnu-deepak" target="_blank" rel="noreferrer" aria-label="LinkedIn">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M4.98 3.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.52-1 1.8-2.05 3.7-2.05 3.95 0 4.45 2.6 4.45 5.98V21h-4v-5.35c0-1.28-.02-2.93-1.8-2.93-1.8 0-2.08 1.4-2.08 2.84V21H9z" fill="currentColor" />
+              </svg>
+            </a>
+            <a href="mailto:vishnu95211@gmail.com" aria-label="Email">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M4 5h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2zm0 2 8 5 8-5H4zm16 10V9l-8 5-8-5v8h16z" fill="currentColor" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <form class="contact-form" action="{% url 'home' %}#contact" method="post">
+      {% csrf_token %}
+      <h3>Send a Message</h3>
+      <p>Fill out the form below and I will get back to you soon.</p>
+      {% if contact_submitted %}
+      <p class="form-success">Sent.</p>
+      {% endif %}
+      <div class="form-grid">
+        <label>
+          Name
+          <input type="text" name="name" placeholder="Your name" value="{{ contact_form.name.value|default:'' }}" required />
+          {% if contact_form.name.errors %}
+          <span class="form-error">{{ contact_form.name.errors.0 }}</span>
+          {% endif %}
+        </label>
+        <label>
+          Email
+          <input type="email" name="email" placeholder="you@gmail.com" value="{{ contact_form.email.value|default:'' }}" pattern="^[A-Za-z0-9._%+-]+@gmail\.com$" title="Use a Gmail address (example@gmail.com)" required />
+          {% if contact_form.email.errors %}
+          <span class="form-error">{{ contact_form.email.errors.0 }}</span>
+          {% endif %}
+        </label>
+      </div>
+      <label>
+        Subject
+        <input type="text" name="subject" placeholder="Subject" value="{{ contact_form.subject.value|default:'' }}" data-max-words="7" required />
+        <small class="form-hint">Maximum 7 words.</small>
+        {% if contact_form.subject.errors %}
+        <span class="form-error">{{ contact_form.subject.errors.0 }}</span>
+        {% endif %}
+      </label>
+      <label>
+        Message
+        <textarea name="message" rows="4" placeholder="Let's talk about..." data-max-words="15" required>{{ contact_form.message.value|default:'' }}</textarea>
+        <small class="form-hint">Maximum 15 words.</small>
+        {% if contact_form.message.errors %}
+        <span class="form-error">{{ contact_form.message.errors.0 }}</span>
+        {% endif %}
+      </label>
+      {% if contact_form.non_field_errors %}
+      <p class="form-error">{{ contact_form.non_field_errors.0 }}</p>
+      {% endif %}
+      <button class="btn primary" type="submit">Send Message</button>
+    </form>
+  </div>
+</section>
+{% endblock %}
