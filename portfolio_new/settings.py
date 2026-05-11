@@ -10,11 +10,7 @@ SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-change-me")
 DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 
 # FIX: hardcode vercel domains — don't rely on env var for ALLOWED_HOSTS
-ALLOWED_HOSTS = [
-    ".vercel.app",        # covers all *.vercel.app preview + production URLs
-    "localhost",
-    "127.0.0.1",
-]
+ALLOWED_HOSTS = [".vercel.app", "localhost", "127.0.0.1"]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
