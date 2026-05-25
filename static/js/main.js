@@ -12,6 +12,133 @@ const observer = new IntersectionObserver(
 
 document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
 
+// About section image and video reveal
+const aboutSection = document.getElementById("about");
+if (aboutSection) {
+  const aboutImage = document.getElementById("about-details-image");
+  const aboutVideo = document.getElementById("about-intro-video");
+  const soundToggle = document.getElementById("video-sound-toggle");
+  const soundOffIcon = document.querySelector(".sound-off-icon");
+  const soundOnIcon = document.querySelector(".sound-on-icon");
+  
+  // Function to play the video animation sequence
+  function playVideoAnimation() {
+    // Show image
+    aboutImage.style.display = "block";
+    aboutImage.classList.remove("fade-out");
+    aboutVideo.style.display = "none";
+    aboutVideo.classList.remove("play");
+    
+    // After 1 second, fade out image and play video
+    setTimeout(() => {
+      aboutImage.classList.add("fade-out");
+      setTimeout(() => {
+        aboutImage.style.display = "none";
+        // Explicitly set video display to block
+        aboutVideo.style.display = "block";
+        aboutVideo.classList.add("play");
+        aboutVideo.currentTime = 0; // Reset video to start
+        
+        // Ensure audio plays by removing muted attribute and setting volume
+        aboutVideo.muted = false;
+        aboutVideo.volume = 1;
+        
+        // Force video to play with sound - use play() promise
+        const playPromise = aboutVideo.play();
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              console.log("Video autoplay started successfully");
+              updateSoundIcon();
+            })
+            .catch(err => {
+              console.log("Autoplay prevented:", err);
+              // Attempt to play muted first, then unmute
+              aboutVideo.muted = true;
+              aboutVideo.play().then(() => {
+                aboutVideo.muted = false;
+                updateSoundIcon();
+              });
+            });
+        }
+      }, 1000);
+    }, 1000);
+  }
+  
+  // Handle video end event
+  function handleVideoEnd() {
+    // Show image again when video ends
+    aboutVideo.style.display = "none";
+    aboutImage.style.display = "block";
+    aboutImage.classList.remove("fade-out");
+  }
+  
+  const aboutObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting && aboutImage && aboutVideo) {
+          playVideoAnimation();
+          
+          // Add event listeners only once
+          aboutVideo.removeEventListener("ended", handleVideoEnd);
+          aboutVideo.addEventListener("ended", handleVideoEnd);
+          
+          aboutVideo.removeEventListener("click", togglePlayPause);
+          aboutVideo.addEventListener("click", togglePlayPause);
+          
+          aboutImage.removeEventListener("click", playVideoAnimation);
+          aboutImage.addEventListener("click", playVideoAnimation);
+          
+          // Add sound toggle handler
+          if (soundToggle) {
+            soundToggle.removeEventListener("click", handleSoundToggle);
+            soundToggle.addEventListener("click", handleSoundToggle);
+          }
+          
+          aboutObserver.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.3 }
+  );
+  
+  aboutObserver.observe(aboutSection);
+  
+  // Play/Pause toggle function
+  function togglePlayPause() {
+    if (aboutVideo.paused) {
+      aboutVideo.play();
+    } else {
+      aboutVideo.pause();
+    }
+  }
+  
+  // Sound toggle handler
+  function handleSoundToggle(e) {
+    e.stopPropagation();
+    toggleSound();
+  }
+  
+  // Sound toggle function
+  function toggleSound() {
+    aboutVideo.muted = !aboutVideo.muted;
+    updateSoundIcon();
+  }
+  
+  // Update sound icon display
+  function updateSoundIcon() {
+    if (soundOffIcon && soundOnIcon) {
+      if (aboutVideo.muted) {
+        soundOffIcon.style.display = "block";
+        soundOnIcon.style.display = "none";
+      } else {
+        soundOffIcon.style.display = "none";
+        soundOnIcon.style.display = "block";
+      }
+    }
+  }
+}
+
 const sections = Array.from(document.querySelectorAll("section[id]"));
 const navLinks = Array.from(document.querySelectorAll(".nav-links a"));
 
