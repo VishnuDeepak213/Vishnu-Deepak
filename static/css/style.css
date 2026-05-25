@@ -100,7 +100,7 @@ main,
 }
 
 .logo-symbol {
-  width: 48px;
+  width: 44px;
   height: 44px;
   object-fit: contain;
   filter: drop-shadow(0 6px 14px rgba(45, 212, 191, 0.35));
@@ -391,11 +391,119 @@ main,
   max-width: 520px;
 }
 
-.about {
+.about-media-container {
+  width: 100%;
+  max-width: 600px;
+  height: 340px;
+  margin: 2rem auto 3rem;
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+  background: var(--bg-soft);
+  cursor: pointer;
+}
+
+.about-details-image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  opacity: 1;
+  transition: opacity 1s ease-out;
+  border-radius: 12px;
+}
+
+.about-details-image.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.about-intro-video {
+  width: 100%;
+  height: 100%;
+  display: none;
+  object-fit: cover;
+  border-radius: 12px;
+  background: var(--bg-soft);
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.about-intro-video::-webkit-media-controls {
+  display: none !important;
+}
+
+.about-intro-video::-moz-media-controls {
+  display: none !important;
+}
+
+.about-intro-video.play {
+  display: block;
+}
+
+.video-sound-toggle {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.25);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: background 0.3s ease, opacity 0.3s ease;
+  opacity: 0.5;
+  animation: fadeIn 0.3s ease forwards;
+  animation-delay: 0.5s;
+}
+
+.video-sound-toggle:hover {
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0.9;
+}
+
+.video-sound-toggle svg {
+  width: 16px;
+  height: 16px;
+  color: var(--ink);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.about-wrapper {
   display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.about {
+  display: flex;
+  flex-direction: column;
   gap: 16px;
-  max-width: 760px;
   color: var(--muted);
+}
+
+.about p {
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+  color: var(--muted);
+  line-height: 1.8;
+  text-align: justify;
+  white-space: normal;
 }
 
 .project-grid {
@@ -712,7 +820,7 @@ main,
 .project-widget-media span {
   display: none;
 }
-}
+
 
 .project-widget-body {
   padding: 18px;
