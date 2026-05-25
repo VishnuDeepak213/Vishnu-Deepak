@@ -26,6 +26,8 @@ if (aboutSection) {
     // Show image
     aboutImage.style.display = "block";
     aboutImage.classList.remove("fade-out");
+    aboutImage.style.opacity = "1";
+    aboutImage.style.pointerEvents = "auto";
     aboutVideo.style.display = "none";
     aboutVideo.classList.remove("play");
     
@@ -33,34 +35,43 @@ if (aboutSection) {
     setTimeout(() => {
       aboutImage.classList.add("fade-out");
       setTimeout(() => {
+        // Reset video BEFORE making it visible
+        aboutVideo.currentTime = 0;
+        aboutVideo.muted = true; // MUST be muted for Chrome autoplay
+        aboutVideo.volume = 1;
+        aboutVideo.playbackRate = 1;
+        
+        // Make video display block
         aboutImage.style.display = "none";
-        // Explicitly set video display to block
         aboutVideo.style.display = "block";
         aboutVideo.classList.add("play");
-        aboutVideo.currentTime = 0; // Reset video to start
         
-        // Ensure audio plays by removing muted attribute and setting volume
-        aboutVideo.muted = false;
-        aboutVideo.volume = 1;
+        // Force browser reflow to ensure element is rendered
+        aboutVideo.offsetHeight;
         
-        // Force video to play with sound - use play() promise
-        const playPromise = aboutVideo.play();
-        if (playPromise !== undefined) {
-          playPromise
-            .then(() => {
-              console.log("Video autoplay started successfully");
-              updateSoundIcon();
-            })
-            .catch(err => {
-              console.log("Autoplay prevented:", err);
-              // Attempt to play muted first, then unmute
-              aboutVideo.muted = true;
-              aboutVideo.play().then(() => {
-                aboutVideo.muted = false;
+        // Give browser time to render, then play
+        setTimeout(() => {
+          const playPromise = aboutVideo.play();
+          
+          if (playPromise !== undefined) {
+            playPromise
+              .then(() => {
+                console.log("Video autoplay successful");
+                // Unmute after play starts successfully
+                setTimeout(() => {
+                  aboutVideo.muted = false;
+                  updateSoundIcon();
+                }, 100);
+              })
+              .catch(err => {
+                console.log("Autoplay not allowed, attempting muted play");
+                // Try without unmuting
+                aboutVideo.muted = true;
+                aboutVideo.play().catch(e => console.log("Play error:", e));
                 updateSoundIcon();
               });
-            });
-        }
+          }
+        }, 100);
       }, 1000);
     }, 1000);
   }
