@@ -483,10 +483,10 @@ main,
 }
 
 .about-wrapper {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 3rem;
-  align-items: start;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
   max-width: 1200px;
   margin: 0 auto;
 }
@@ -496,6 +496,8 @@ main,
   flex-direction: column;
   gap: 16px;
   color: var(--muted);
+  text-align: center;
+  max-width: 800px;
 }
 
 .about p {
@@ -503,10 +505,7 @@ main,
   color: var(--muted);
   line-height: 1.8;
   text-align: center;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
+  white-space: normal;
 }
 
 .project-grid {
