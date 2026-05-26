@@ -502,8 +502,11 @@ main,
   font-size: clamp(0.9rem, 2vw, 1.1rem);
   color: var(--muted);
   line-height: 1.8;
-  text-align: justify;
-  white-space: normal;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 
 .project-grid {
