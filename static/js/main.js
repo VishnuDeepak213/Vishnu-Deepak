@@ -37,70 +37,59 @@ if (aboutSection) {
     }
   }
   
-  // Reset to initial state with image, YES overlay (2nd entry)
+  // Overlay appears only when video is not playing
+  function updateOverlay() {
+    if (aboutVideo.paused) {
+      if (videoOverlay) videoOverlay.classList.remove("hidden");
+    } else {
+      if (videoOverlay) videoOverlay.classList.add("hidden");
+    }
+  }
+  
+  // Reset to initial state with image only (NO overlay, NO auto-play)
   function resetVideoState() {
     aboutVideo.pause();
     aboutVideo.currentTime = 0;
     aboutVideo.muted = true;
     aboutImage.classList.remove("fade-out");
     aboutImage.style.opacity = "1";
-    aboutImage.style.pointerEvents = "auto";
-    aboutImage.style.zIndex = "2";
-    aboutVideo.style.zIndex = "1";
-    if (videoOverlay) videoOverlay.classList.remove("hidden");
+    updateOverlay();
     updateSoundIcon();
   }
   
   // Auto-play animation (FIRST TIME ONLY)
   function playVideoAnimation() {
-    // Show image for 1 second with NO overlay
+    // Show image for 1 second, HIDE overlay during auto-play sequence
+    aboutImage.style.opacity = "1";
     if (videoOverlay) videoOverlay.classList.add("hidden");
     
     setTimeout(() => {
-      // Fade out image, show video
+      // Fade out image
       aboutImage.classList.add("fade-out");
-      aboutImage.style.pointerEvents = "none";
-      aboutImage.style.zIndex = "0";
       
+      // After fade completes, play video
       setTimeout(() => {
-        aboutVideo.muted = true;
         aboutVideo.currentTime = 0;
-        aboutVideo.style.zIndex = "3";
-        const playPromise = aboutVideo.play();
+        aboutVideo.muted = true;
+        aboutVideo.play().catch(e => console.error("Auto-play failed:", e));
+        // Overlay stays hidden while video plays
+        if (videoOverlay) videoOverlay.classList.add("hidden");
         
-        if (playPromise !== undefined) {
-          playPromise
-            .then(() => {
-              // Video is playing, HIDE overlay
-              if (videoOverlay) videoOverlay.classList.add("hidden");
-              
-              // Unmute after 100ms
-              setTimeout(() => {
-                aboutVideo.muted = false;
-                updateSoundIcon();
-              }, 100);
-            })
-            .catch(() => {
-              // Autoplay failed, show overlay
-              if (videoOverlay) videoOverlay.classList.remove("hidden");
-            });
-        }
+        // Unmute after a short delay
+        setTimeout(() => {
+          aboutVideo.muted = false;
+          updateSoundIcon();
+        }, 100);
       }, 500);
     }, 1000);
   }
   
-  // Handle video end event - show image and overlay
+  // Handle video end event - show image with overlay
   function handleVideoEnd() {
-    aboutVideo.pause();
     aboutVideo.currentTime = 0;
     aboutImage.classList.remove("fade-out");
     aboutImage.style.opacity = "1";
-    aboutImage.style.pointerEvents = "auto";
-    aboutImage.style.zIndex = "2";
-    aboutVideo.style.zIndex = "1";
-    if (videoOverlay) videoOverlay.classList.remove("hidden");
-    aboutVideo.muted = true;
-    updateSoundIcon();
+    updateOverlay(); // Shows overlay since video is now paused
   }
   
   // Handle image click to play with sound
@@ -108,57 +97,23 @@ if (aboutSection) {
     // Only play if image is visible (not faded out)
     if (!aboutImage.classList.contains("fade-out")) {
       aboutImage.classList.add("fade-out");
-      aboutImage.style.pointerEvents = "none";
-      aboutImage.style.zIndex = "0";
-      
-      // Reset and prepare video
-      aboutVideo.muted = false;
       aboutVideo.currentTime = 0;
-      aboutVideo.style.zIndex = "3";
-      
-      // Wait for image to fade before playing
-      setTimeout(() => {
-        const playPromise = aboutVideo.play();
-        if (playPromise !== undefined) {
-          playPromise
-            .then(() => {
-              if (videoOverlay) videoOverlay.classList.add("hidden");
-              updateSoundIcon();
-            })
-            .catch(e => console.error("Play failed:", e));
-        }
-      }, 100);
+      aboutVideo.muted = false;
+      aboutVideo.play().catch(e => console.error("Manual play failed:", e));
+      updateOverlay();
+      updateSoundIcon();
     }
   }
   
-  // Handle overlay click to play
-  function handleOverlayClick() {
-    if (videoOverlay && !videoOverlay.classList.contains("hidden")) {
-      aboutVideo.muted = false;
-      aboutVideo.currentTime = 0;
-      aboutVideo.style.zIndex = "3";
-      
-      const playPromise = aboutVideo.play();
-      if (playPromise !== undefined) {
-        playPromise
-          .then(() => {
-            if (videoOverlay) videoOverlay.classList.add("hidden");
-            updateSoundIcon();
-          })
-          .catch(e => console.error("Play failed:", e));
-      }
-    }
-  }
-  
-  // Handle video click to pause/resume
-  function togglePlayPause() {
+  // Handle video click to play/pause
+  function togglePlayPause(e) {
+    e.stopPropagation();
     if (aboutVideo.paused) {
       aboutVideo.play();
-      if (videoOverlay) videoOverlay.classList.add("hidden");
     } else {
       aboutVideo.pause();
-      if (videoOverlay) videoOverlay.classList.remove("hidden");
     }
+    updateOverlay();
   }
   
   // Sound toggle handler
@@ -168,7 +123,7 @@ if (aboutSection) {
     updateSoundIcon();
   }
   
-  // Set up intersection observer - KEEPS WATCHING (doesn't unobserve)
+  // Set up intersection observer - KEEPS WATCHING
   const aboutObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -178,11 +133,11 @@ if (aboutSection) {
             playVideoAnimation();
             firstTimeEntry = false;
           } else {
-            // Subsequent entries: show image, NO overlay, no auto-play
+            // Subsequent entries: show image only, no overlay, no auto-play
             resetVideoState();
           }
           
-          // Ensure event listeners are set up
+          // Set up event listeners
           aboutVideo.removeEventListener("ended", handleVideoEnd);
           aboutVideo.addEventListener("ended", handleVideoEnd);
           
@@ -192,15 +147,18 @@ if (aboutSection) {
           aboutImage.removeEventListener("click", handleImageClick);
           aboutImage.addEventListener("click", handleImageClick);
           
-          if (videoOverlay) {
-            videoOverlay.removeEventListener("click", handleOverlayClick);
-            videoOverlay.addEventListener("click", handleOverlayClick);
-          }
-          
           if (soundToggle) {
             soundToggle.removeEventListener("click", handleSoundToggle);
             soundToggle.addEventListener("click", handleSoundToggle);
           }
+          
+          // Monitor play/pause to update overlay
+          aboutVideo.removeEventListener("play", updateOverlay);
+          aboutVideo.addEventListener("play", updateOverlay);
+          
+          aboutVideo.removeEventListener("pause", updateOverlay);
+          aboutVideo.addEventListener("pause", updateOverlay);
+          
         } else if (!entry.isIntersecting && aboutVideo) {
           // When leaving section, pause video
           if (!aboutVideo.paused) {
