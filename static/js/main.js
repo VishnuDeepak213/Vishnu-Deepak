@@ -12,20 +12,6 @@ const observer = new IntersectionObserver(
 
 document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
 
-const observer = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("visible");
-        observer.unobserve(entry.target);
-      }
-    });
-  },
-  { threshold: 0.2 }
-);
-
-document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
-
 // About section image and video reveal
 const aboutSection = document.getElementById("about");
 if (aboutSection) {
@@ -36,29 +22,26 @@ if (aboutSection) {
   const soundOffIcon = document.querySelector(".sound-off-icon");
   const soundOnIcon = document.querySelector(".sound-on-icon");
   
-  let videoPlayed = false;
+  let firstTimeEntry = true;
 
-  // Function to fully reset video element
-  function resetVideoElement() {
-    // Stop all playback
-    aboutVideo.pause();
-    aboutVideo.currentTime = 0;
-    
-    // Reset all properties
-    aboutVideo.muted = true;
-    aboutVideo.volume = 1;
-    aboutVideo.playbackRate = 1;
-    
-    // Remove all event listeners to clear state
-    const newVideo = aboutVideo.cloneNode(true);
-    aboutVideo.parentNode.replaceChild(newVideo, aboutVideo);
-    
-    // Update reference if needed (though we'll use the old variable)
-    return newVideo;
+  // Update sound icon display
+  function updateSoundIcon() {
+    if (soundOffIcon && soundOnIcon) {
+      if (aboutVideo.muted) {
+        soundOffIcon.style.display = "block";
+        soundOnIcon.style.display = "none";
+      } else {
+        soundOffIcon.style.display = "none";
+        soundOnIcon.style.display = "block";
+      }
+    }
   }
 
-  // Function to reset UI state
-  function resetUIState() {
+  // Function to reset video to initial state (no auto-play)
+  function resetVideoState() {
+    aboutVideo.pause();
+    aboutVideo.currentTime = 0;
+    aboutVideo.muted = true;
     aboutImage.style.display = "block";
     aboutImage.classList.remove("fade-out");
     aboutImage.style.opacity = "1";
@@ -66,11 +49,10 @@ if (aboutSection) {
     aboutVideo.style.display = "none";
     aboutVideo.classList.remove("play");
     if (videoOverlay) videoOverlay.classList.remove("hidden");
-    videoPlayed = false;
     updateSoundIcon();
   }
   
-  // Function to play the video animation sequence
+  // Function to play the video animation sequence (FIRST TIME ONLY - AUTO PLAY)
   function playVideoAnimation() {
     // Show image
     aboutImage.style.display = "block";
@@ -86,7 +68,7 @@ if (aboutSection) {
       setTimeout(() => {
         // Reset video BEFORE making it visible
         aboutVideo.currentTime = 0;
-        aboutVideo.muted = true;  // CRITICAL: Must be muted FIRST
+        aboutVideo.muted = true;
         aboutVideo.volume = 1;
         aboutVideo.playbackRate = 1;
         
@@ -100,7 +82,6 @@ if (aboutSection) {
         
         // Give browser time to render, then play
         setTimeout(() => {
-          // CRITICAL: Set muted again right before play
           aboutVideo.muted = true;
           const playPromise = aboutVideo.play();
           
@@ -108,22 +89,17 @@ if (aboutSection) {
             playPromise
               .then(() => {
                 console.log("Video autoplay successful");
-                // Hide overlay when video plays
                 if (videoOverlay) videoOverlay.classList.add("hidden");
-                videoPlayed = true;
-                // Unmute after play starts successfully
                 setTimeout(() => {
                   aboutVideo.muted = false;
                   updateSoundIcon();
                 }, 100);
               })
               .catch(err => {
-                console.log("Autoplay blocked, attempting muted play");
-                // Ensure muted and try again
+                console.log("Autoplay blocked");
                 aboutVideo.muted = true;
                 aboutVideo.play().catch(e => console.log("Play error:", e));
                 if (videoOverlay) videoOverlay.classList.add("hidden");
-                videoPlayed = true;
                 updateSoundIcon();
               });
           }
@@ -134,21 +110,19 @@ if (aboutSection) {
   
   // Handle video end event
   function handleVideoEnd() {
-    // Show image again when video ends
     aboutVideo.style.display = "none";
     aboutImage.style.display = "block";
     aboutImage.classList.remove("fade-out");
     if (videoOverlay) videoOverlay.classList.remove("hidden");
   }
   
-  // Handle image click to replay with sound
+  // Handle image click to play with sound
   function handleImageClick() {
-    // If image is visible (not faded out), restart animation with sound
     if (aboutImage.classList.contains("fade-out") === false) {
       aboutImage.classList.add("fade-out");
-      // Play video with sound on replay
+      aboutImage.style.display = "none";
+      aboutVideo.muted = false;
       aboutVideo.currentTime = 0;
-      aboutVideo.muted = false;  // Unmute for replay
       aboutVideo.style.display = "block";
       aboutVideo.classList.add("play");
       aboutVideo.play().catch(e => console.error("Play failed:", e));
@@ -160,8 +134,6 @@ if (aboutSection) {
   // Handle video click to pause/resume
   function togglePlayPause() {
     if (aboutVideo.paused) {
-      aboutVideo.muted = false;
-      updateSoundIcon();
       aboutVideo.play();
       if (videoOverlay) videoOverlay.classList.add("hidden");
     } else {
@@ -170,20 +142,24 @@ if (aboutSection) {
     }
   }
   
+  // Sound toggle handler
+  function handleSoundToggle(e) {
+    e.stopPropagation();
+    aboutVideo.muted = !aboutVideo.muted;
+    updateSoundIcon();
+  }
+  
   const aboutObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting && aboutImage && aboutVideo) {
-          // When entering about section
-          if (!videoPlayed) {
-            // First time entering - play animation
+          if (firstTimeEntry) {
             playVideoAnimation();
+            firstTimeEntry = false;
           } else {
-            // Re-entering section - reset and prepare for replay
-            resetUIState();
+            resetVideoState();
           }
           
-          // Add event listeners
           aboutVideo.removeEventListener("ended", handleVideoEnd);
           aboutVideo.addEventListener("ended", handleVideoEnd);
           
@@ -193,13 +169,11 @@ if (aboutSection) {
           aboutImage.removeEventListener("click", handleImageClick);
           aboutImage.addEventListener("click", handleImageClick);
           
-          // Add sound toggle handler
           if (soundToggle) {
             soundToggle.removeEventListener("click", handleSoundToggle);
             soundToggle.addEventListener("click", handleSoundToggle);
           }
-        } else if (!entry.isIntersecting && aboutVideo && videoPlayed) {
-          // When leaving about section - pause video
+        } else if (!entry.isIntersecting && aboutVideo) {
           if (!aboutVideo.paused) {
             aboutVideo.pause();
           }
@@ -210,31 +184,6 @@ if (aboutSection) {
   );
   
   aboutObserver.observe(aboutSection);
-  
-  // Sound toggle handler
-  function handleSoundToggle(e) {
-    e.stopPropagation();
-    toggleSound();
-  }
-  
-  // Sound toggle function
-  function toggleSound() {
-    aboutVideo.muted = !aboutVideo.muted;
-    updateSoundIcon();
-  }
-  
-  // Update sound icon display
-  function updateSoundIcon() {
-    if (soundOffIcon && soundOnIcon) {
-      if (aboutVideo.muted) {
-        soundOffIcon.style.display = "block";
-        soundOnIcon.style.display = "none";
-      } else {
-        soundOffIcon.style.display = "none";
-        soundOnIcon.style.display = "block";
-      }
-    }
-  }
 }
 
 const sections = Array.from(document.querySelectorAll("section[id]"));
