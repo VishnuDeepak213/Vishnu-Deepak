@@ -9,12 +9,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-change-me"
 DEBUG = False
 
-ALLOWED_HOSTS = [
-    "vishnudeepak.vercel.app",
-    "*.vercel.app",
-    "localhost",
-    "127.0.0.1"
-]
+ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -41,7 +36,7 @@ ROOT_URLCONF = "portfolio_new.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, "templates")],
+        "DIRS": [os.path.join(str(BASE_DIR), "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -59,7 +54,7 @@ WSGI_APPLICATION = "portfolio_new.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "NAME": os.path.join(str(BASE_DIR), "db.sqlite3"),
     }
 }
 
@@ -71,8 +66,8 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = "static/"
-STATICFILES_DIRS = [BASE_DIR / "static"]
-STATIC_ROOT = BASE_DIR / ".vercel" / "output" / "static"
+STATICFILES_DIRS = [os.path.join(str(BASE_DIR), "static")]
+STATIC_ROOT = os.path.join(str(BASE_DIR), ".vercel", "output", "static")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
