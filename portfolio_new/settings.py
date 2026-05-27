@@ -2,6 +2,7 @@
 Django settings for portfolio_new project.
 """
 from pathlib import Path
+import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -35,7 +36,7 @@ ROOT_URLCONF = "portfolio_new.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates"],
+        "DIRS": [str(BASE_DIR / "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -69,3 +70,7 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / ".vercel" / "output" / "static"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Vercel deployment settings
+CSRF_TRUSTED_ORIGINS = ["https://vishnudeepak.vercel.app"]
+SECURE_SSL_REDIRECT = False  # Vercel handles SSL at edge
