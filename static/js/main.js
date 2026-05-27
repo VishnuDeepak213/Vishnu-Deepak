@@ -45,6 +45,8 @@ if (aboutSection) {
     aboutImage.classList.remove("fade-out");
     aboutImage.style.opacity = "1";
     aboutImage.style.pointerEvents = "auto";
+    aboutImage.style.zIndex = "2";
+    aboutVideo.style.zIndex = "1";
     if (videoOverlay) videoOverlay.classList.add("hidden");
     updateSoundIcon();
   }
@@ -58,17 +60,19 @@ if (aboutSection) {
       // Fade out image, show video
       aboutImage.classList.add("fade-out");
       aboutImage.style.pointerEvents = "none";
+      aboutImage.style.zIndex = "0";
       
       setTimeout(() => {
         aboutVideo.muted = true;
         aboutVideo.currentTime = 0;
+        aboutVideo.style.zIndex = "3";
         const playPromise = aboutVideo.play();
         
         if (playPromise !== undefined) {
           playPromise
             .then(() => {
-              // Video is playing, keep overlay hidden
-              if (videoOverlay) videoOverlay.classList.add("hidden");
+              // Video is playing, show overlay so user knows they can click to pause
+              if (videoOverlay) videoOverlay.classList.remove("hidden");
               
               // Unmute after 100ms
               setTimeout(() => {
@@ -92,6 +96,8 @@ if (aboutSection) {
     aboutImage.classList.remove("fade-out");
     aboutImage.style.opacity = "1";
     aboutImage.style.pointerEvents = "auto";
+    aboutImage.style.zIndex = "2";
+    aboutVideo.style.zIndex = "1";
     if (videoOverlay) videoOverlay.classList.remove("hidden");
     aboutVideo.muted = true;
     updateSoundIcon();
@@ -103,11 +109,25 @@ if (aboutSection) {
     if (!aboutImage.classList.contains("fade-out")) {
       aboutImage.classList.add("fade-out");
       aboutImage.style.pointerEvents = "none";
+      aboutImage.style.zIndex = "0";
+      
+      // Reset and prepare video
       aboutVideo.muted = false;
       aboutVideo.currentTime = 0;
-      aboutVideo.play().catch(e => console.error("Manual play failed:", e));
-      if (videoOverlay) videoOverlay.classList.add("hidden");
-      updateSoundIcon();
+      aboutVideo.style.zIndex = "3";
+      
+      // Wait for image to fade before playing
+      setTimeout(() => {
+        const playPromise = aboutVideo.play();
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              if (videoOverlay) videoOverlay.classList.add("hidden");
+              updateSoundIcon();
+            })
+            .catch(e => console.error("Play failed:", e));
+        }
+      }, 100);
     }
   }
   
@@ -116,9 +136,17 @@ if (aboutSection) {
     if (videoOverlay && !videoOverlay.classList.contains("hidden")) {
       aboutVideo.muted = false;
       aboutVideo.currentTime = 0;
-      aboutVideo.play().catch(e => console.error("Play failed:", e));
-      if (videoOverlay) videoOverlay.classList.add("hidden");
-      updateSoundIcon();
+      aboutVideo.style.zIndex = "3";
+      
+      const playPromise = aboutVideo.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            if (videoOverlay) videoOverlay.classList.add("hidden");
+            updateSoundIcon();
+          })
+          .catch(e => console.error("Play failed:", e));
+      }
     }
   }
   
