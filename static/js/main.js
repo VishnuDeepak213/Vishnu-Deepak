@@ -37,7 +37,7 @@ if (aboutSection) {
     }
   }
   
-  // Reset to initial state with image, NO overlay (2nd entry)
+  // Reset to initial state with image, YES overlay (2nd entry)
   function resetVideoState() {
     aboutVideo.pause();
     aboutVideo.currentTime = 0;
@@ -47,7 +47,7 @@ if (aboutSection) {
     aboutImage.style.pointerEvents = "auto";
     aboutImage.style.zIndex = "2";
     aboutVideo.style.zIndex = "1";
-    if (videoOverlay) videoOverlay.classList.add("hidden");
+    if (videoOverlay) videoOverlay.classList.remove("hidden");
     updateSoundIcon();
   }
   
@@ -71,8 +71,8 @@ if (aboutSection) {
         if (playPromise !== undefined) {
           playPromise
             .then(() => {
-              // Video is playing, show overlay so user knows they can click to pause
-              if (videoOverlay) videoOverlay.classList.remove("hidden");
+              // Video is playing, HIDE overlay
+              if (videoOverlay) videoOverlay.classList.add("hidden");
               
               // Unmute after 100ms
               setTimeout(() => {
