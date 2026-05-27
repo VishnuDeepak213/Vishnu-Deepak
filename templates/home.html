@@ -64,8 +64,13 @@
         <source src="{% static 'video/Portfolio video O.mp4' %}" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
-      <div id="video-overlay" class="video-overlay">
-        <span class="video-overlay-text">▶ Click to play video</span>
+      <div id="video-overlay" class="video-overlay hidden">
+        <div class="overlay-content">
+          <svg viewBox="0 0 24 24" class="play-icon">
+            <path d="M8 5v14l11-7z" fill="currentColor" />
+          </svg>
+          <p>Click to play video</p>
+        </div>
       </div>
       <button id="video-sound-toggle" class="video-sound-toggle" aria-label="Toggle sound">
         <svg viewBox="0 0 24 24" class="sound-off-icon">
@@ -78,15 +83,6 @@
       </button>
     </div>
     
-    <div class="about">
-      <p>
-        I work across the ML lifecycle, from data preparation and modeling to
-        deployment and monitoring. My projects emphasize reliability, explainability,
-        and clean user experiences.
-      </p>
-    </div>
-  </div>
-</section>    
     <div class="about">
       <p>
         I work across the ML lifecycle, from data preparation and modeling to
@@ -490,11 +486,3 @@
         <span class="form-error">{{ contact_form.message.errors.0 }}</span>
         {% endif %}
       </label>
-      {% if contact_form.non_field_errors %}
-      <p class="form-error">{{ contact_form.non_field_errors.0 }}</p>
-      {% endif %}
-      <button class="btn primary" type="submit">Send Message</button>
-    </form>
-  </div>
-</section>
-{% endblock %}
