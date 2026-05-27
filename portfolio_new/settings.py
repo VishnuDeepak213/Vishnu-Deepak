@@ -9,7 +9,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-change-me"
 DEBUG = False
 
-ALLOWED_HOSTS = ["vishnudeepak.vercel.app", "localhost", "127.0.0.1"]
+ALLOWED_HOSTS = [
+    "vishnudeepak.vercel.app",
+    "*.vercel.app",
+    "localhost",
+    "127.0.0.1"
+]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
