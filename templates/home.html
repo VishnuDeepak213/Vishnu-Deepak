@@ -486,3 +486,11 @@
         <span class="form-error">{{ contact_form.message.errors.0 }}</span>
         {% endif %}
       </label>
+      {% if contact_form.non_field_errors %}
+      <p class="form-error">{{ contact_form.non_field_errors.0 }}</p>
+      {% endif %}
+      <button class="btn primary" type="submit">Send Message</button>
+    </form>
+  </div>
+</section>
+{% endblock %}
