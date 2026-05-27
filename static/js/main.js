@@ -104,6 +104,18 @@ if (aboutSection) {
       updateSoundIcon();
     }
   }
+
+  // Handle overlay click to play with sound (when overlay is visible)
+  function handleOverlayClick() {
+    if (videoOverlay && !videoOverlay.classList.contains("hidden")) {
+      aboutImage.classList.add("fade-out");
+      aboutVideo.currentTime = 0;
+      aboutVideo.muted = false;
+      aboutVideo.play().catch(e => console.error("Manual play from overlay failed:", e));
+      updateOverlay();
+      updateSoundIcon();
+    }
+  }
   
   // Handle video click to play/pause
   function togglePlayPause(e) {
@@ -146,6 +158,11 @@ if (aboutSection) {
           
           aboutImage.removeEventListener("click", handleImageClick);
           aboutImage.addEventListener("click", handleImageClick);
+          
+          if (videoOverlay) {
+            videoOverlay.removeEventListener("click", handleOverlayClick);
+            videoOverlay.addEventListener("click", handleOverlayClick);
+          }
           
           if (soundToggle) {
             soundToggle.removeEventListener("click", handleSoundToggle);
