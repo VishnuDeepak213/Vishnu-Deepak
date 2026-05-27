@@ -24,16 +24,6 @@ if (aboutSection) {
   
   let firstTimeEntry = true;
   
-  // Show overlay when image is visible
-  function showOverlay() {
-    if (videoOverlay) videoOverlay.classList.remove("hidden");
-  }
-  
-  // Hide overlay when video starts playing
-  function hideOverlay() {
-    if (videoOverlay) videoOverlay.classList.add("hidden");
-  }
-  
   // Update sound icon display
   function updateSoundIcon() {
     if (soundOffIcon && soundOnIcon) {
@@ -47,44 +37,62 @@ if (aboutSection) {
     }
   }
   
-  // Reset to initial state with image and overlay (NO auto-play)
+  // Reset to initial state with image, NO overlay (2nd entry)
   function resetVideoState() {
     aboutVideo.pause();
     aboutVideo.currentTime = 0;
     aboutVideo.muted = true;
     aboutImage.classList.remove("fade-out");
     aboutImage.style.opacity = "1";
-    showOverlay();
+    aboutImage.style.pointerEvents = "auto";
+    if (videoOverlay) videoOverlay.classList.add("hidden");
     updateSoundIcon();
   }
   
   // Auto-play animation (FIRST TIME ONLY)
   function playVideoAnimation() {
-    // Show image for 1 second, then fade out and auto-play video
+    // Show image for 1 second with NO overlay
+    if (videoOverlay) videoOverlay.classList.add("hidden");
+    
     setTimeout(() => {
+      // Fade out image, show video
       aboutImage.classList.add("fade-out");
-      // After image fades, play video muted
+      aboutImage.style.pointerEvents = "none";
+      
       setTimeout(() => {
         aboutVideo.muted = true;
         aboutVideo.currentTime = 0;
-        aboutVideo.play().catch(e => console.error("Auto-play failed:", e));
-        hideOverlay();
-        // Unmute after a short delay
-        setTimeout(() => {
-          aboutVideo.muted = false;
-          updateSoundIcon();
-        }, 100);
+        const playPromise = aboutVideo.play();
+        
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              // Video is playing, keep overlay hidden
+              if (videoOverlay) videoOverlay.classList.add("hidden");
+              
+              // Unmute after 100ms
+              setTimeout(() => {
+                aboutVideo.muted = false;
+                updateSoundIcon();
+              }, 100);
+            })
+            .catch(() => {
+              // Autoplay failed, show overlay
+              if (videoOverlay) videoOverlay.classList.remove("hidden");
+            });
+        }
       }, 500);
     }, 1000);
   }
   
-  // Handle video end event - show image and overlay again
+  // Handle video end event - show image and overlay
   function handleVideoEnd() {
     aboutVideo.pause();
     aboutVideo.currentTime = 0;
     aboutImage.classList.remove("fade-out");
     aboutImage.style.opacity = "1";
-    showOverlay();
+    aboutImage.style.pointerEvents = "auto";
+    if (videoOverlay) videoOverlay.classList.remove("hidden");
     aboutVideo.muted = true;
     updateSoundIcon();
   }
@@ -94,10 +102,22 @@ if (aboutSection) {
     // Only play if image is visible (not faded out)
     if (!aboutImage.classList.contains("fade-out")) {
       aboutImage.classList.add("fade-out");
+      aboutImage.style.pointerEvents = "none";
       aboutVideo.muted = false;
       aboutVideo.currentTime = 0;
       aboutVideo.play().catch(e => console.error("Manual play failed:", e));
-      hideOverlay();
+      if (videoOverlay) videoOverlay.classList.add("hidden");
+      updateSoundIcon();
+    }
+  }
+  
+  // Handle overlay click to play
+  function handleOverlayClick() {
+    if (videoOverlay && !videoOverlay.classList.contains("hidden")) {
+      aboutVideo.muted = false;
+      aboutVideo.currentTime = 0;
+      aboutVideo.play().catch(e => console.error("Play failed:", e));
+      if (videoOverlay) videoOverlay.classList.add("hidden");
       updateSoundIcon();
     }
   }
@@ -106,10 +126,10 @@ if (aboutSection) {
   function togglePlayPause() {
     if (aboutVideo.paused) {
       aboutVideo.play();
-      hideOverlay();
+      if (videoOverlay) videoOverlay.classList.add("hidden");
     } else {
       aboutVideo.pause();
-      showOverlay();
+      if (videoOverlay) videoOverlay.classList.remove("hidden");
     }
   }
   
@@ -130,7 +150,7 @@ if (aboutSection) {
             playVideoAnimation();
             firstTimeEntry = false;
           } else {
-            // Subsequent entries: show image with overlay, no auto-play
+            // Subsequent entries: show image, NO overlay, no auto-play
             resetVideoState();
           }
           
@@ -143,6 +163,11 @@ if (aboutSection) {
           
           aboutImage.removeEventListener("click", handleImageClick);
           aboutImage.addEventListener("click", handleImageClick);
+          
+          if (videoOverlay) {
+            videoOverlay.removeEventListener("click", handleOverlayClick);
+            videoOverlay.addEventListener("click", handleOverlayClick);
+          }
           
           if (soundToggle) {
             soundToggle.removeEventListener("click", handleSoundToggle);
