@@ -556,8 +556,15 @@ main,
 }
 
 .education-content {
-  text-align: left;
-  max-width: 100%;
+  display: grid;
+  gap: 10px;
+  max-width: 760px;
+  color: var(--muted);
+}
+
+.education-content p:first-child {
+  font-size: 1.05rem;
+  color: var(--ink);
 }
 
 .project-grid {
@@ -705,6 +712,14 @@ main,
   border-radius: 18px;
   box-shadow: var(--shadow-soft);
 }
+.skill-card h3 {
+  font-family: "Fraunces", serif;
+  margin-bottom: 10px;
+}
+.skill-card p {
+  color: var(--muted);
+  line-height: 1.8;
+}
 
 .contact-card {
   background: var(--surface);
@@ -818,6 +833,8 @@ main,
   margin-bottom: 4px;
 }
 
+
+
 .project-widget-grid {
   display: grid;
   gap: 24px;
@@ -873,6 +890,24 @@ main,
 
 .project-widget-media span {
   display: none;
+}
+
+.project-widget-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding: 16px 18px;
+  background:
+    radial-gradient(circle at top right, rgba(233, 196, 106, 0.22), transparent 42%),
+    linear-gradient(145deg, rgba(45, 212, 191, 0.28), rgba(10, 12, 18, 0.92));
+  color: var(--ink);
+  font-family: "Fraunces", serif;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-shadow: 0 10px 28px rgba(6, 10, 18, 0.45);
 }
 
 
@@ -939,6 +974,33 @@ main,
   visibility: hidden;
   pointer-events: none;
   transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
+}
+.project-widget-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(45, 212, 191, 0.35);
+  color: var(--accent-2);
+  text-decoration: none;
+  font-weight: 700;
+}
+.project-widget-link:hover {
+  background: rgba(45, 212, 191, 0.08);
+}
+.project-widget-details ul {
+  display: grid;
+  gap: 6px;
+  padding-left: 18px;
+  color: var(--muted);
+}
+.project-widget-details h4 {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1.4px;
+  color: var(--muted);
+  margin-bottom: 8px;
 }
 
 .project-widget:hover {
@@ -1147,6 +1209,16 @@ main,
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
+.education-content {
+  display: grid;
+  gap: 10px;
+  max-width: 760px;
+  color: var(--muted);
+}
+.education-content p:first-child {
+  font-size: 1.05rem;
+  color: var(--ink);
+}
 .contact-form:hover,
 .contact-form:focus-within {
   transform: translateY(-2px);
